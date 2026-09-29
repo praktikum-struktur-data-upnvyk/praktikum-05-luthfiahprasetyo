@@ -71,21 +71,85 @@ string display(Stack& s) {
 
 // SOAL 1
 bool push(Stack& s, int nilai) {
-    return false;
+    Node* newNode = new Node;
+
+    if(newNode == nullptr){
+        return false;
+    }
+
+    newNode->data = nilai;
+    newNode->next = s.top;
+    s.top = newNode;
+    return true;
 }
 
 // SOAL 2
 bool pop(Stack& s, int& nilai) {
-    return false;
+    if(s.top == nullptr){
+        return false;
+    }
+
+    Node* temp = s.top;
+    nilai = temp->data ;
+    s.top = s.top->next;
+    return true;
 }
 
 // SOAL 3
 void clear(Stack& s) {
+    while (s.top != nullptr)
+    {
+        Node* temp = s.top;
+        s.top = s.top->next;
+        delete temp;
+    }
 }
 
 // SOAL 4
 bool kurungSeimbang(const string& ekspresi) {
-    return false;
+    Stack s;
+    inisialisasi(s);
+
+    for (auto c : ekspresi){
+        if(c == '('){
+            push(s,1);
+        }
+        else if(c == '['){
+            push(s, 2);
+        }
+        else if(c == '{'){
+            push(s, 3);
+        }
+        else if(c == ')' || c == ']' || c == '}'){
+            int cek;
+
+            if(isEmpty(s)){
+                return false;
+            }
+
+            pop(s, cek);
+
+            if(c == ')' && cek != 1){
+                clear(s);
+                return false;
+            }
+            else if(c == ']' && cek != 2){
+                clear(s);
+                return false;
+            }
+            else if(c == '}' && cek != 3){
+                clear(s);
+                return false;
+            }
+        }
+    }
+    if(isEmpty(s)){
+        return true;
+    }
+    else{
+        clear(s);
+        return false;
+    }
 }
 
 // =============================================================================
